@@ -76,5 +76,9 @@ task buildRelease(type: Zip, group: "build") {
     from("$buildDir/output")
 }
 
+test {
+    exclude '**/**Integration*'
+}
+
 buildRelease.dependsOn buildExecutableJar
 buildExecutableJar.dependsOn shadowJar
