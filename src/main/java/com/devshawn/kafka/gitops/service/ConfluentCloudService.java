@@ -15,7 +15,6 @@ public class ConfluentCloudService {
 
     private final ObjectMapper objectMapper;
     private static final String confluentExecutable;
-    private static final String ccloudExecutable;
 
     public ConfluentCloudService(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -24,7 +23,7 @@ public class ConfluentCloudService {
     public List<ServiceAccount> getServiceAccounts() {
         log.info("Fetching service account list from Confluent Cloud via confluent tool.");
         try {
-            String result = execCmd(new String[]{ccloudExecutable, "service-account", "list", "-o", "json"});
+            String result = execCmd(new String[]{confluentExecutable, "iam", "service-account", "list", "-o", "json"});
             return objectMapper.readValue(result, new TypeReference<List<ServiceAccount>>() {
             });
         } catch (IOException ex) {
@@ -54,7 +53,5 @@ public class ConfluentCloudService {
     static {
         confluentExecutable = System.getenv("CONFLUENT_EXECUTABLE_PATH") != null ? System.getenv("CONFLUENT_EXECUTABLE_PATH") : "confluent";
         log.info("Using confluent executable at: {}", confluentExecutable);
-        ccloudExecutable = System.getenv("CCLOUD_EXECUTABLE_PATH") != null ? System.getenv("CCLOUD_EXECUTABLE_PATH") : "ccloud";
-        log.info("Using ccloud executable at: {}", confluentExecutable);
     }
 }
